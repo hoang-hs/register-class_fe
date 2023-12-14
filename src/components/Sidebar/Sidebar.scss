@@ -1,0 +1,14 @@
+#sidebar.nav {
+    height: 100vh;
+    width: 240px;
+
+    .nav-item > .nav-link {
+        font-weight: 600;
+        color: var(--bs-tertiary-color);
+
+        &:hover, &.active {
+            color: var(--bs-danger);
+            background-color: var(--bs-danger-bg-subtle);
+        }
+    }
+}
