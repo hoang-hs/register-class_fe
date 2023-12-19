@@ -13,7 +13,6 @@ const App = () => {
 
     return (
         <div className='d-flex h-100'>
-            {/* <HeaderBar/> */}
             <Sidebar />
             <div className='px-5 py-4 w-100 bg-light'>
                 <Routes>

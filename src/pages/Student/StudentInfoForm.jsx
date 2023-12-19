@@ -12,7 +12,6 @@ const StudentInfoForm = forwardRef(function ({ token }, ref) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [year, setYear] = useState('');
 
-    console.log(token);
     useImperativeHandle(ref, () => ({
         updateInfo(props) {
             setFormType(props.formType);
