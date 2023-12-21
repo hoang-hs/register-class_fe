@@ -1,4 +1,5 @@
 import Students from "./pages/Student";
+import Professor from "./pages/Professor";
 
 export const routes = [
     {
@@ -9,7 +10,7 @@ export const routes = [
     {
         path: '/giang-vien',
         title: 'Giảng viên',
-        element: <div className='flex-fill'>Giảng viên</div>
+        element: <Professor/>
     },
     {
         path: '/phong-hoc',
