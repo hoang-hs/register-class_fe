@@ -12,9 +12,9 @@ const App = () => {
     if (!token) return <Login setToken={setToken}/>;
 
     return (
-        <div className='d-flex h-100'>
+        <div className='d-flex'>
             <Sidebar />
-            <div className='px-5 py-4 w-100 bg-light'>
+            <div className='px-5 py-4 w-100 bg-light overflow-hidden'>
                 <Routes>
                     {routes.map(({ path, element }, index) => (
                         <Route 

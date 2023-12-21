@@ -6,14 +6,6 @@ import { Tooltip } from 'bootstrap';
 import DeleteStudent from './DeleteStudent';
 import Pagination from '../../components/Pagination';
 
-function prettify(str) {
-    const words = str.match(/([^_]+)/g) || [];
-    words.forEach(function(word, i) {
-      words[i] = word[0].toUpperCase() + word.slice(1);
-    });
-    return words.join(' ');
-};
-
 function isIsoDate(str) {
     if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3,}Z/.test(str)) return false;
     const d = new Date(str); 
@@ -31,7 +23,7 @@ const Students = ({ token }) => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
 
-    const getStudents = async query => {
+    const getStudents = async (query = '') => {
         // setLoading(true);
         const response = await axios({
             method: 'get',
@@ -57,7 +49,7 @@ const Students = ({ token }) => {
 
     if (students.length) return (
         <>
-            <StudentInfoForm ref={formRef} token={token}/>
+            <StudentInfoForm ref={formRef} token={token} getStudents={getStudents}/>
             <DeleteStudent ref={deleteStudentRef} token={token} />
             <div className="d-flex justify-content-between w-100 mb-4">
                 <h2 className="fw-bold mb-0">Sinh viên</h2>
@@ -75,14 +67,22 @@ const Students = ({ token }) => {
             <Pagination metaRecord={metaRecord} setCurrentPage={setCurrentPage} />
             <table className="mt-3 table table-hover border">
                 <thead>
-                    <tr>{Object.keys(students[0]).map((attr, index) => (
-                        <th key={index} scope="col">{prettify(attr)}</th>
-                ))}</tr>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Họ và tên</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Năm sinh</th>
+                        <th scope="col">Số tín chỉ</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Tên đăng nhập</th>
+                        <th scope="col">Ngày tạo</th>
+                        <th scope="col">Ngày cập nhật</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {students.map((student, studentIdx) => (<tr key={studentIdx}>
                         {Object.values(student).map((value, valueIdx) => {
-                            return <td key={valueIdx}>{isIsoDate(value) ?  new Date(value).toLocaleDateString() : value}</td>
+                            return <td key={valueIdx} scope={!valueIdx ? 'row' : ''}>{isIsoDate(value) ?  new Date(value).toLocaleDateString() : value}</td>
                         })}
                         <td className='table-actions d-flex align-items-center'>
                             <button 

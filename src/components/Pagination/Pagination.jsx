@@ -18,14 +18,14 @@ const Pagination = ({ metaRecord, setCurrentPage }) => {
                     disabled={prev_query === ''}
                 >
                     <i className="fa-solid fa-chevron-left me-2"></i>
-                    Previous
+                    Trang trước
                 </button></li>
                 <li className="page-item"><button 
                     className="page-link"
                     onClick={nextPage}
                     disabled={next_query === ''}
                 >
-                    Next
+                    Trang sau
                     <i className="fa-solid fa-chevron-right ms-2"></i>
                 </button></li>
             </ul>
