@@ -30,11 +30,12 @@ const StudentInfoForm = forwardRef(function ({ token, getStudents }, ref) {
 
     const modal = Modal.getInstance(document.querySelector('#studentInfo'));
 
+    console.log(id);
+
     const addNewStudent = useCallback(() => {
-        if (!id) return;
         axios({
             method: 'post',
-            url: `http://34.128.115.142:8080/api/students/${id}`,
+            url: `http://34.128.115.142:8080/api/students`,
             data: {
                 username,
                 password,
