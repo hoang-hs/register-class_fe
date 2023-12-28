@@ -1,32 +1,38 @@
 import './App.css';
 // import {Button, Alert, Nav} from 'react-bootstrap'
-import React, { cloneElement, useState } from "react";
-import Sidebar from "./components/Sidebar/Sidebar";
-import {routes} from './constants';
+import React, { cloneElement, useState } from 'react';
+import { routes } from './constants';
 import { Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
+import Main from './components/Main/Main';
 
 const App = () => {
-    const [token, setToken] = useState();
-
-    if (!token) return <Login setToken={setToken}/>;
+    // if (!token) return <Login setToken={setToken} />;
 
     return (
-        <div className='d-flex'>
-            <Sidebar />
-            <div className='px-5 py-4 w-100 bg-light overflow-hidden'>
-                <Routes>
-                    {routes.map(({ path, element }, index) => (
-                        <Route 
-                            key={index} 
-                            path={path}
-                            element={cloneElement(element, { token })}
-                        />
-                    ))}
-                </Routes> 
-            </div>
-        </div>
+        <Routes>
+            <Route path='/login' element={<Login />} />
+            <Route path='/' element={<Main />}>
+                {routes.map(({ path, element }, index) => (
+                    <Route
+                        key={index}
+                        path={path}
+                        element={cloneElement(element)}
+                    />
+                ))}
+            </Route>
+        </Routes>
     );
-}
+};
 
 export default App;
+
+// <Route path='/' element={<Main />}>
+//                         {routes.map(({ path, element }, index) => (
+//                             <Route
+//                                 key={index}
+//                                 path={path}
+//                                 element={cloneElement(element)}
+//                             />
+//                         ))}
+//                     </Route>
