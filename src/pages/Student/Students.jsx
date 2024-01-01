@@ -88,7 +88,7 @@ const Students = () => {
                             <th scope='col'>ID</th>
                             <th scope='col'>Họ và tên</th>
                             <th scope='col'>Email</th>
-                            <th scope='col'>Năm sinh</th>
+                            <th scope='col'>Năm học</th>
                             <th scope='col'>Số tín chỉ</th>
                             <th scope='col'>Số điện thoại</th>
                             <th scope='col'>Tên đăng nhập</th>
