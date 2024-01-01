@@ -7,14 +7,6 @@ import DeleteProfessor from './DeleteProfessor';
 import Pagination from '../../components/Pagination';
 import { useOutletContext } from 'react-router';
 
-function prettify(str) {
-    const words = str.match(/([^_]+)/g) || [];
-    words.forEach(function (word, i) {
-        words[i] = word[0].toUpperCase() + word.slice(1);
-    });
-    return words.join(' ');
-}
-
 function isIsoDate(str) {
     if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3,}Z/.test(str)) return false;
     const d = new Date(str);
@@ -38,7 +30,7 @@ const Professors = () => {
         (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
     );
 
-    const getProfessors = async (query) => {
+    const getProfessors = async (query = '') => {
         // setLoading(true);
         const response = await axios({
             method: 'get',
@@ -62,15 +54,17 @@ const Professors = () => {
         getProfessors(currentPage);
     }, [currentPage]);
 
-    console.log(professors);
-
     if (professors.length)
         return (
             <>
-                <ProfessorInfoForm ref={formRef} token={token} />
+                <ProfessorInfoForm
+                    ref={formRef}
+                    token={token}
+                    getProfessors={getProfessors}
+                />
                 <DeleteProfessor ref={deleteProfessorRef} token={token} />
                 <div className='d-flex justify-content-between w-100 mb-4'>
-                    <h2 className='fw-bold mb-0'>Sinh viên</h2>
+                    <h2 className='fw-bold mb-0'>Giảng viên</h2>
                     <button
                         type='button'
                         className='btn btn-danger fw-semibold'
@@ -91,11 +85,14 @@ const Professors = () => {
                 <table className='mt-3 table table-hover border'>
                     <thead>
                         <tr>
-                            {Object.keys(professors[0]).map((attr, index) => (
-                                <th key={index} scope='col'>
-                                    {prettify(attr)}
-                                </th>
-                            ))}
+                            <th scope='col'>ID</th>
+                            <th scope='col'>Họ và tên</th>
+                            <th scope='col'>Email</th>
+                            <th scope='col'>Địa chỉ</th>
+                            <th scope='col'>Số điện thoại</th>
+                            <th scope='col'>Tên đăng nhập</th>
+                            <th scope='col'>Ngày tạo</th>
+                            <th scope='col'>Ngày cập nhật</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,7 +101,10 @@ const Professors = () => {
                                 {Object.values(professor).map(
                                     (value, valueIdx) => {
                                         return (
-                                            <td key={valueIdx}>
+                                            <td
+                                                key={valueIdx}
+                                                scope={!valueIdx ? 'row' : ''}
+                                            >
                                                 {isIsoDate(value)
                                                     ? new Date(
                                                           value
@@ -152,7 +152,7 @@ const Professors = () => {
                                             data-bs-toggle='tooltip'
                                             data-bs-placement='top'
                                             data-bs-custom-class='custom-tooltip'
-                                            data-bs-title='Xóa sinh viên'
+                                            data-bs-title='Xóa giảng viên'
                                         ></i>
                                     </button>
                                 </td>

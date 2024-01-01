@@ -141,7 +141,7 @@ const StudentInfoForm = forwardRef(function ({ token, getStudents }, ref) {
                         />
                         <TextInput
                             type='number'
-                            label='Năm sinh'
+                            label='Năm học'
                             value={year}
                             setValue={setYear}
                         />
