@@ -2,12 +2,13 @@ import Students from "./pages/Student";
 import Professor from "./pages/Professor";
 import Rooms from "./pages/Room";
 import Courses from "./pages/Course";
+import Classes from "./pages/Class";
 
 export const routes = [
     {
         path: '/sinh-vien',
         title: 'Sinh viên',
-        element: <Students />
+        element: <Students/>
     },
     {
         path: '/giang-vien',
@@ -17,22 +18,22 @@ export const routes = [
     {
         path: '/phong-hoc',
         title: 'Phòng học',
-        element:  <Rooms />
+        element: <Rooms/>
     },
     {
         path: '/khoa-hoc',
         title: 'Khóa học',
-        element: <Courses />
+        element: <Courses/>
     },
     {
         path: '/lop-hoc',
         title: 'Lớp học',
-        element: <div className='flex-fill'>Lớp học</div>
+        element: <Classes/>
     }
 ]
 
 export const roles = [
-    { role: 'STUDENT', label: 'Sinh viên' },
-    { role: 'PROFESSOR', label: 'Giảng viên' },
-    { role: 'ADMIN', label: 'Quản trị viên' }
+    {role: 'STUDENT', label: 'Sinh viên'},
+    {role: 'PROFESSOR', label: 'Giảng viên'},
+    {role: 'ADMIN', label: 'Quản trị viên'}
 ];
