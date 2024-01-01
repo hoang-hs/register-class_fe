@@ -1,6 +1,7 @@
 import Students from "./pages/Student";
 import Professor from "./pages/Professor";
 import Rooms from "./pages/Room";
+import Courses from "./pages/Course";
 
 export const routes = [
     {
@@ -21,7 +22,7 @@ export const routes = [
     {
         path: '/khoa-hoc',
         title: 'Khóa học',
-        element: <div className='flex-fill'>Khóa học</div>
+        element: <Courses />
     },
     {
         path: '/lop-hoc',
