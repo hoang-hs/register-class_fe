@@ -64,7 +64,7 @@ const Classes = () => {
                 />
                 <DeleteClass ref={deleteClassRef} token={token}/>
                 <div className='d-flex justify-content-between w-100 mb-4'>
-                    <h2 className='fw-bold mb-0'>Phòng học</h2>
+                    <h2 className='fw-bold mb-0'>Lớp học</h2>
                     <button
                         type='button'
                         className='btn btn-danger fw-semibold'
@@ -75,7 +75,7 @@ const Classes = () => {
                         }
                     >
                         <i className='fa-solid fa-plus me-2'></i>
-                        Thêm phòng học
+                        Thêm lớp học
                     </button>
                 </div>
                 <Pagination
