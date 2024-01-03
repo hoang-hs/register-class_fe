@@ -5,15 +5,17 @@
 //     NavIcon,
 //     NavText
 // } from "@trendmicro/react-sidenav";
-import { useState } from "react";
+import { useState } from 'react';
 
-import { routes } from "../../constants";
+import { routes } from '../../constants';
 import logo from './logo.png';
 import './Sidebar.scss';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { useAuthenication } from '../../hooks/useAuthenication';
 
-const SideNavBar = props => {
+const SideNavBar = (props) => {
     const [tab, setTab] = useState('/sinh-vien');
+    const { logout } = useAuthenication();
 
     // return (
     //     <SideNav expanded={expanded}>
@@ -74,24 +76,30 @@ const SideNavBar = props => {
     //     </SideNav>
     // )
     return (
-        <nav 
-            id="sidebar"
-            className="nav flex-column border-end"
-        >   
-            <div className="logo-container px-3 py-4">
-                <img src={logo} alt='logo' className="w-100" />
+        <nav id='sidebar' className='nav flex-column border-end'>
+            <div className='logo-container px-3 py-4'>
+                <img src={logo} alt='logo' className='w-100' />
             </div>
-            {routes.map(({ path, title }) => (
-                <li className="nav-item">
-                    <Link 
+            {routes.map(({ path, title }, idx) => (
+                <li key={idx} className='nav-item'>
+                    <Link
                         className={`nav-link ${tab === path ? 'active' : ''}`}
                         to={path}
                         onClick={() => setTab(path)}
-                    >{title}</Link>
+                    >
+                        {title}
+                    </Link>
                 </li>
             ))}
+
+            <li className='logout nav-item' onClick={logout}>
+                <a className='nav-link'>
+                    <i className='fas fa-sign-out-alt me-2' />
+                    Đăng xuất
+                </a>
+            </li>
         </nav>
     );
-}
+};
 
 export default SideNavBar;

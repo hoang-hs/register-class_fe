@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
 
 const storage = window.localStorage;
 
 export const useAuthenication = () => {
+    const navigate = useNavigate();
+
     const getToken = useCallback(
         () => storage.getItem('register-class_access-token'),
         []
@@ -11,6 +14,15 @@ export const useAuthenication = () => {
     const setToken = useCallback((token) => {
         storage.setItem('register-class_access-token', token);
     }, []);
+
+    const clearToken = useCallback(() => {
+        storage.removeItem('register-class_access-token');
+    }, []);
+
+    const logout = useCallback(() => {
+        clearToken();
+        navigate(0);
+    });
 
     const login = async ({ username, password, role }) => {
         try {
@@ -23,12 +35,14 @@ export const useAuthenication = () => {
                     'Content-Type': 'application/json',
                 },
             });
-            console.log(authenication);
-            setToken(authenication?.data?.access_token);
+            if (authenication?.data?.access_token) {
+                setToken(authenication?.data?.access_token);
+                navigate(0);
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
-    return { getToken, setToken, login };
+    return { getToken, setToken, login, logout };
 };

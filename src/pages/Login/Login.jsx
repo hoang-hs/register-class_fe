@@ -13,6 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     if (getToken()) return <Navigate to='/sinh-vien' replace />;
+
     return (
         <div id='login_page' className='d-flex'>
             <section id='image' className='w-50 h-100' />

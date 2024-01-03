@@ -1,4 +1,5 @@
 #sidebar.nav {
+    position: relative;
     height: 100vh;
     width: 240px;
 
@@ -6,9 +7,17 @@
         font-weight: 600;
         color: var(--bs-tertiary-color);
 
-        &:hover, &.active {
+        &:hover,
+        &.active {
             color: var(--bs-danger);
             background-color: var(--bs-danger-bg-subtle);
         }
+    }
+
+    .logout {
+        width: 100%;
+        position: absolute;
+        bottom: 8px;
+        cursor: pointer;
     }
 }
