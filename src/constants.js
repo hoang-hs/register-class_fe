@@ -56,6 +56,25 @@ export const routes_by_role = {
             hidden: true,
         },
     ],
+    STUDENT: [
+        {
+            index: true,
+            element: <Navigate to='danh-sach-lop-mo' replace />,
+            hidden: true,
+        },
+        {
+            path: 'danh-sach-lop-mo',
+            title: 'Danh sách lớp mở',
+            element: <Classes title='Danh sách lớp mở' type='open' />,
+        },
+        {
+            path: 'lop-da-dang-ki',
+            title: 'Lớp đã đăng kí',
+            element: (
+                <Classes title='Lớp đã đăng kí' type='registered_success' />
+            ),
+        },
+    ],
 };
 
 export const roles = [

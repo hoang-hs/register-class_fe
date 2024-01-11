@@ -14,8 +14,10 @@ function isIsoDate(str) {
     return d instanceof Date && !isNaN(d.getTime());
 }
 
-const Classes = () => {
+const Classes = ({ title = 'Lớp học', type = null }) => {
     const { token, role, isAdmin } = useOutletContext();
+    const { pathname } = useLocation();
+    const isStudent = role === 'STUDENT';
 
     const formRef = useRef(null);
     const deleteClassRef = useRef(null);
@@ -32,11 +34,29 @@ const Classes = () => {
     );
 
     const getClasses = async (query = '') => {
+        const baseUrl = 'http://34.128.115.142:8080/api/classes';
+        let url;
+        switch (role) {
+            case 'ADMIN':
+                url = baseUrl + '?' + query;
+                break;
+            case 'PROFESSOR':
+                url = baseUrl + '/professor' + '?' + query;
+                break;
+            case 'STUDENT':
+                if (type === 'open') {
+                    url = baseUrl + '?' + query;
+                } else if (type === 'registered_success') {
+                    url = baseUrl + '/students?status=SUCCESS';
+                }
+                break;
+            default:
+                break;
+        }
+
         const response = await axios({
             method: 'get',
-            url: `http://34.128.115.142:8080/api/classes${
-                role === 'PROFESSOR' ? '/professors' : '' + '?' + query
-            }`,
+            url: url,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -54,18 +74,23 @@ const Classes = () => {
 
     useEffect(() => {
         getClasses(currentPage);
-    }, [currentPage]);
+    }, [currentPage, pathname]);
+    console.log(type);
 
     return (
         <>
-            <ClassInfoForm
-                ref={formRef}
-                token={token}
-                getClasses={getClasses}
-            />
-            <DeleteClass ref={deleteClassRef} token={token} />
+            {isAdmin ? (
+                <>
+                    <ClassInfoForm
+                        ref={formRef}
+                        token={token}
+                        getClasses={getClasses}
+                    />
+                    <DeleteClass ref={deleteClassRef} token={token} />
+                </>
+            ) : null}
             <div className='d-flex justify-content-between w-100 mb-4'>
-                <h2 className='fw-bold mb-0'>Lớp học</h2>
+                <h2 className='fw-bold mb-0'>{title}</h2>
                 {isAdmin ? (
                     <button
                         type='button'
@@ -93,7 +118,7 @@ const Classes = () => {
                         <thead>
                             <tr>
                                 <th scope='col'>ID</th>
-                                <th scope='col'>Tên lớp hoc</th>
+                                <th scope='col'>Tên lớp học</th>
                                 <th scope='col'>Mã khóa học</th>
                                 <th scope='col'>Mã giảng viên</th>
                                 <th scope='col'>Mã phòng học</th>
@@ -181,6 +206,40 @@ const Classes = () => {
                                                     data-bs-custom-class='custom-tooltip'
                                                     data-bs-title='Xóa ngành học'
                                                 ></i>
+                                            </button>
+                                        </td>
+                                    ) : isStudent ? (
+                                        <td className='table-actions d-flex align-items-center'>
+                                            <button
+                                                className='btn btn-danger'
+                                                onClick={() => {
+                                                    try {
+                                                        axios({
+                                                            method:
+                                                                type === 'open'
+                                                                    ? 'post'
+                                                                    : 'put',
+                                                            url: 'http://34.128.115.142:8080/api/registrations',
+                                                            data: {
+                                                                class_id:
+                                                                    classV.id,
+                                                            },
+                                                            headers: {
+                                                                Accept: 'application/json',
+                                                                'Content-Type':
+                                                                    'application/json',
+                                                                Authorization:
+                                                                    token,
+                                                            },
+                                                        });
+                                                    } catch (err) {
+                                                        console.log(err);
+                                                    }
+                                                }}
+                                            >
+                                                {type === 'open'
+                                                    ? 'Đăng kí'
+                                                    : 'Hủy đăng kí'}
                                             </button>
                                         </td>
                                     ) : null}
