@@ -14,7 +14,7 @@ function isIsoDate(str) {
 }
 
 const Professors = () => {
-    const token = useOutletContext();
+    const { token } = useOutletContext();
 
     const formRef = useRef(null);
     const deleteProfessorRef = useRef(null);

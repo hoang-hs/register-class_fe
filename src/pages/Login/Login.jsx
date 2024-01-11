@@ -12,7 +12,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    if (getToken()) return <Navigate to='/sinh-vien' replace />;
+    if (getToken()) return <Navigate to='/' replace />;
 
     return (
         <div id='login_page' className='d-flex'>

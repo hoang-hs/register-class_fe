@@ -1,11 +1,12 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Classes.scss';
 import axios from 'axios';
 import ClassInfoForm from './ClassInfoForm';
-import {Tooltip} from 'bootstrap';
+import { Tooltip } from 'bootstrap';
 import DeleteClass from './DeleteClass';
 import Pagination from '../../components/Pagination';
-import {useOutletContext} from 'react-router';
+import { useLocation, useOutletContext } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function isIsoDate(str) {
     if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3,}Z/.test(str)) return false;
@@ -14,7 +15,7 @@ function isIsoDate(str) {
 }
 
 const Classes = () => {
-    const token = useOutletContext();
+    const { token, role, isAdmin } = useOutletContext();
 
     const formRef = useRef(null);
     const deleteClassRef = useRef(null);
@@ -31,10 +32,11 @@ const Classes = () => {
     );
 
     const getClasses = async (query = '') => {
-        // setLoading(true);
         const response = await axios({
             method: 'get',
-            url: `http://34.128.115.142:8080/api/classes?${query}`,
+            url: `http://34.128.115.142:8080/api/classes${
+                role === 'PROFESSOR' ? '/professors' : '' + '?' + query
+            }`,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ const Classes = () => {
             },
         });
 
-        const {records, meta_record} = response?.data || {};
+        const { records, meta_record } = response?.data || {};
         setClasses(records || []);
         setMetaRecord((state) => ({
             prev_query: meta_record?.prev_query || '',
@@ -54,121 +56,150 @@ const Classes = () => {
         getClasses(currentPage);
     }, [currentPage]);
 
-    if (classes.length)
-        return (
-            <>
-                <ClassInfoForm
-                    ref={formRef}
-                    token={token}
-                    getClasses={getClasses}
-                />
-                <DeleteClass ref={deleteClassRef} token={token}/>
-                <div className='d-flex justify-content-between w-100 mb-4'>
-                    <h2 className='fw-bold mb-0'>Lớp học</h2>
+    return (
+        <>
+            <ClassInfoForm
+                ref={formRef}
+                token={token}
+                getClasses={getClasses}
+            />
+            <DeleteClass ref={deleteClassRef} token={token} />
+            <div className='d-flex justify-content-between w-100 mb-4'>
+                <h2 className='fw-bold mb-0'>Lớp học</h2>
+                {isAdmin ? (
                     <button
                         type='button'
                         className='btn btn-danger fw-semibold'
                         data-bs-toggle='modal'
                         data-bs-target='#courseInfo'
                         onClick={() =>
-                            formRef?.current?.updateInfo({formType: 'add'})
+                            formRef?.current?.updateInfo({ formType: 'add' })
                         }
                     >
                         <i className='fa-solid fa-plus me-2'></i>
                         Thêm lớp học
                     </button>
-                </div>
-                <Pagination
-                    metaRecord={metaRecord}
-                    setCurrentPage={setCurrentPage}
-                />
-                <table className='mt-3 table table-hover border'>
-                    <thead>
-                    <tr>
-                        <th scope='col'>ID</th>
-                        <th scope='col'>Tên lớp hoc</th>
-                        <th scope='col'>Mã khóa học</th>
-                        <th scope='col'>Mã giảng viên</th>
-                        <th scope='col'>Mã phòng học</th>
-                        <th scope='col'>Số sinh viên</th>
-                        <th scope='col'>Tiết bắt đầu</th>
-                        <th scope='col'>Tiết kết thúc</th>
-                        <th scope='col'>Ngày trong tuần</th>
-                        <th scope='col'>Ngày tạo</th>
-                        <th scope='col'>Ngày cập nhật</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {classes.map((classV, classIdx) => (
-                        <tr key={classIdx}>
-                            {Object.values(classV).map(
-                                (value, valueIdx) => {
-                                    return (
-                                        <td
-                                            key={valueIdx}
-                                            scope={!valueIdx ? 'row' : ''}
-                                        >
-                                            {isIsoDate(value)
-                                                ? new Date(
-                                                    value
-                                                ).toLocaleDateString()
-                                                : value}
+                ) : (
+                    <div />
+                )}
+            </div>
+            {classes.length ? (
+                <>
+                    <Pagination
+                        metaRecord={metaRecord}
+                        setCurrentPage={setCurrentPage}
+                    />
+                    <table className='mt-3 table table-hover border'>
+                        <thead>
+                            <tr>
+                                <th scope='col'>ID</th>
+                                <th scope='col'>Tên lớp hoc</th>
+                                <th scope='col'>Mã khóa học</th>
+                                <th scope='col'>Mã giảng viên</th>
+                                <th scope='col'>Mã phòng học</th>
+                                <th scope='col'>Số sinh viên</th>
+                                <th scope='col'>Tiết bắt đầu</th>
+                                <th scope='col'>Tiết kết thúc</th>
+                                <th scope='col'>Ngày trong tuần</th>
+                                <th scope='col'>Ngày tạo</th>
+                                <th scope='col'>Ngày cập nhật</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {classes.map((classV, classIdx) => (
+                                <tr key={classIdx}>
+                                    {Object.values(classV).map(
+                                        (value, valueIdx) => {
+                                            return (
+                                                <td
+                                                    key={valueIdx}
+                                                    scope={
+                                                        !valueIdx ? 'row' : ''
+                                                    }
+                                                >
+                                                    {valueIdx === 0 &&
+                                                    role === 'PROFESSOR' ? (
+                                                        <Link
+                                                            to={`/sinh-vien?class_id=${value}`}
+                                                            // state={{
+                                                            //     classId: value,
+                                                            // }}
+                                                        >
+                                                            {value}
+                                                        </Link>
+                                                    ) : isIsoDate(value) ? (
+                                                        new Date(
+                                                            value
+                                                        ).toLocaleDateString()
+                                                    ) : (
+                                                        value
+                                                    )}
+                                                </td>
+                                            );
+                                        }
+                                    )}
+                                    {isAdmin ? (
+                                        <td className='table-actions d-flex align-items-center'>
+                                            <button
+                                                className='action'
+                                                data-bs-toggle='modal'
+                                                data-bs-target='#courseInfo'
+                                                onClick={() =>
+                                                    formRef?.current?.updateInfo(
+                                                        {
+                                                            ...classV,
+                                                            formType: 'edit',
+                                                        }
+                                                    )
+                                                }
+                                            >
+                                                <i
+                                                    className='fa-solid fa-pen'
+                                                    data-bs-toggle='tooltip'
+                                                    data-bs-placement='top'
+                                                    data-bs-custom-class='custom-tooltip'
+                                                    data-bs-title='Thay đổi thông tin'
+                                                ></i>
+                                            </button>
+                                            <button
+                                                className='action'
+                                                data-bs-toggle='modal'
+                                                data-bs-target='#deleteClass'
+                                                onClick={() =>
+                                                    deleteClassRef?.current?.updateInfoToDelete(
+                                                        {
+                                                            id: classV.id,
+                                                            name: classV.name,
+                                                        }
+                                                    )
+                                                }
+                                            >
+                                                <i
+                                                    className='fa-solid fa-trash'
+                                                    data-bs-toggle='tooltip'
+                                                    data-bs-placement='top'
+                                                    data-bs-custom-class='custom-tooltip'
+                                                    data-bs-title='Xóa ngành học'
+                                                ></i>
+                                            </button>
                                         </td>
-                                    );
-                                }
-                            )}
-                            <td className='table-actions d-flex align-items-center'>
-                                <button
-                                    className='action'
-                                    data-bs-toggle='modal'
-                                    data-bs-target='#courseInfo'
-                                    onClick={() =>
-                                        formRef?.current?.updateInfo({
-                                            ...classV,
-                                            formType: 'edit',
-                                        })
-                                    }
-                                >
-                                    <i
-                                        className='fa-solid fa-pen'
-                                        data-bs-toggle='tooltip'
-                                        data-bs-placement='top'
-                                        data-bs-custom-class='custom-tooltip'
-                                        data-bs-title='Thay đổi thông tin'
-                                    ></i>
-                                </button>
-                                <button
-                                    className='action'
-                                    data-bs-toggle='modal'
-                                    data-bs-target='#deleteClass'
-                                    onClick={() =>
-                                        deleteClassRef?.current?.updateInfoToDelete(
-                                            {
-                                                id: classV.id,
-                                                name: classV.name,
-                                            }
-                                        )
-                                    }
-                                >
-                                    <i
-                                        className='fa-solid fa-trash'
-                                        data-bs-toggle='tooltip'
-                                        data-bs-placement='top'
-                                        data-bs-custom-class='custom-tooltip'
-                                        data-bs-title='Xóa ngành học'
-                                    ></i>
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-                <Pagination
-                    metaRecord={metaRecord}
-                    setCurrentPage={setCurrentPage}
-                />
-            </>
-        );
+                                    ) : null}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <Pagination
+                        metaRecord={metaRecord}
+                        setCurrentPage={setCurrentPage}
+                    />
+                </>
+            ) : (
+                <div className='w-100 text-center text-secondary'>
+                    Không có lớp học
+                </div>
+            )}
+        </>
+    );
 };
 
 export default Classes;

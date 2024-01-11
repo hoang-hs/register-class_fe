@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 const storage = window.localStorage;
@@ -19,9 +19,22 @@ export const useAuthenication = () => {
         storage.removeItem('register-class_access-token');
     }, []);
 
+    const getRole = useCallback(
+        () => storage.getItem('register-class_access-role'),
+        []
+    );
+    const setRole = useCallback((role) => {
+        storage.setItem('register-class_access-role', role);
+    }, []);
+
+    const clearRole = useCallback(() => {
+        storage.removeItem('register-class_access-role');
+    }, []);
+
     const logout = useCallback(() => {
         clearToken();
-        navigate(0);
+        clearRole();
+        navigate('/login');
     });
 
     const login = async ({ username, password, role }) => {
@@ -37,6 +50,7 @@ export const useAuthenication = () => {
             });
             if (authenication?.data?.access_token) {
                 setToken(authenication?.data?.access_token);
+                setRole(role);
                 navigate(0);
             }
         } catch (error) {
@@ -44,5 +58,5 @@ export const useAuthenication = () => {
         }
     };
 
-    return { getToken, setToken, login, logout };
+    return { getRole, getToken, setToken, login, logout };
 };

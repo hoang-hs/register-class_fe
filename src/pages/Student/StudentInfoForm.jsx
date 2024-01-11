@@ -30,8 +30,6 @@ const StudentInfoForm = forwardRef(function ({ token, getStudents }, ref) {
 
     const modal = Modal.getInstance(document.querySelector('#studentInfo'));
 
-    console.log(id);
-
     const addNewStudent = useCallback(() => {
         axios({
             method: 'post',
