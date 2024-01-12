@@ -41,7 +41,7 @@ const Classes = ({ title = 'Lớp học', type = null }) => {
                 url = baseUrl + '?' + query;
                 break;
             case 'PROFESSOR':
-                url = baseUrl + '/professor' + '?' + query;
+                url = baseUrl + '/professors' + '?' + query;
                 break;
             case 'STUDENT':
                 if (type === 'open') {
