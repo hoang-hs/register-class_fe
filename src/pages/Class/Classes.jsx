@@ -24,7 +24,7 @@ const Classes = ({ title = 'Lớp học', type = null }) => {
     // const [loading, setLoading] = useState(true);
     const [classes, setClasses] = useState([]);
     const [metaRecord, setMetaRecord] = useState({});
-    const [currentPage, setCurrentPage] = useState('');
+    const [currentPage, setCurrentPage] = useState('limit=10');
 
     const tooltipTriggerList = document.querySelectorAll(
         '[data-bs-toggle="tooltip"]'
@@ -38,21 +38,22 @@ const Classes = ({ title = 'Lớp học', type = null }) => {
         let url;
         switch (role) {
             case 'ADMIN':
-                url = baseUrl + '?' + query;
+                url = baseUrl + '?';
                 break;
             case 'PROFESSOR':
-                url = baseUrl + '/professor' + '?' + query;
+                url = baseUrl + '/professors' + '?';
                 break;
             case 'STUDENT':
                 if (type === 'open') {
-                    url = baseUrl + '?' + query;
+                    url = baseUrl + '?';
                 } else if (type === 'registered_success') {
-                    url = baseUrl + '/students?status=SUCCESS';
+                    url = baseUrl + '/students?status=SUCCESS&';
                 }
                 break;
             default:
                 break;
         }
+        url += query;
 
         const response = await axios({
             method: 'get',
@@ -75,7 +76,6 @@ const Classes = ({ title = 'Lớp học', type = null }) => {
     useEffect(() => {
         getClasses(currentPage);
     }, [currentPage, pathname]);
-    console.log(type);
 
     return (
         <>

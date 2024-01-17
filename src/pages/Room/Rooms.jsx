@@ -14,7 +14,7 @@ function isIsoDate(str) {
 }
 
 const Rooms = () => {
-    const { token } = useOutletContext();
+    const { token, role, isAdmin } = useOutletContext();
 
     const formRef = useRef(null);
     const deleteRoomRef = useRef(null);
@@ -54,111 +54,136 @@ const Rooms = () => {
         getRooms(currentPage);
     }, [currentPage]);
 
-    if (rooms.length)
-        return (
-            <>
-                <RoomInfoForm ref={formRef} token={token} getRooms={getRooms} />
-                <DeleteRoom ref={deleteRoomRef} token={token} />
-                <div className='d-flex justify-content-between w-100 mb-4'>
-                    <h2 className='fw-bold mb-0'>Phòng học</h2>
+    return (
+        <>
+            {isAdmin ? (
+                <>
+                    <RoomInfoForm
+                        ref={formRef}
+                        token={token}
+                        getRooms={getRooms}
+                    />
+                    <DeleteRoom ref={deleteRoomRef} token={token} />
+                </>
+            ) : null}
+            <div className='d-flex justify-content-between w-100 mb-4'>
+                <h2 className='fw-bold mb-0'>Phòng học</h2>
+                {isAdmin ? (
                     <button
                         type='button'
                         className='btn btn-danger fw-semibold'
                         data-bs-toggle='modal'
                         data-bs-target='#roomInfo'
                         onClick={() =>
-                            formRef?.current?.updateInfo({ formType: 'add' })
+                            formRef?.current?.updateInfo({
+                                formType: 'add',
+                            })
                         }
                     >
                         <i className='fa-solid fa-plus me-2'></i>
                         Thêm phòng học
                     </button>
-                </div>
-                <Pagination
-                    metaRecord={metaRecord}
-                    setCurrentPage={setCurrentPage}
-                />
-                <table className='mt-3 table table-hover border'>
-                    <thead>
-                        <tr>
-                            <th scope='col'>ID</th>
-                            <th scope='col'>Tên phòng</th>
-                            <th scope='col'>Mô tả</th>
-                            <th scope='col'>Tòa nhà</th>
-                            <th scope='col'>Sức chứa</th>
-                            <th scope='col'>Ngày tạo</th>
-                            <th scope='col'>Ngày cập nhật</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rooms.map((room, roomIdx) => (
-                            <tr key={roomIdx}>
-                                {Object.values(room).map((value, valueIdx) => {
-                                    return (
-                                        <td
-                                            key={valueIdx}
-                                            scope={!valueIdx ? 'row' : ''}
-                                        >
-                                            {isIsoDate(value)
-                                                ? new Date(
-                                                      value
-                                                  ).toLocaleDateString()
-                                                : value}
-                                        </td>
-                                    );
-                                })}
-                                <td className='table-actions d-flex align-items-center'>
-                                    <button
-                                        className='action'
-                                        data-bs-toggle='modal'
-                                        data-bs-target='#roomInfo'
-                                        onClick={() =>
-                                            formRef?.current?.updateInfo({
-                                                ...room,
-                                                formType: 'edit',
-                                            })
-                                        }
-                                    >
-                                        <i
-                                            className='fa-solid fa-pen'
-                                            data-bs-toggle='tooltip'
-                                            data-bs-placement='top'
-                                            data-bs-custom-class='custom-tooltip'
-                                            data-bs-title='Thay đổi thông tin'
-                                        ></i>
-                                    </button>
-                                    <button
-                                        className='action'
-                                        data-bs-toggle='modal'
-                                        data-bs-target='#deleteRoom'
-                                        onClick={() =>
-                                            deleteRoomRef?.current?.updateInfoToDelete(
-                                                {
-                                                    id: room.id,
-                                                    name: room.name,
-                                                }
-                                            )
-                                        }
-                                    >
-                                        <i
-                                            className='fa-solid fa-trash'
-                                            data-bs-toggle='tooltip'
-                                            data-bs-placement='top'
-                                            data-bs-custom-class='custom-tooltip'
-                                            data-bs-title='Xóa phòng học'
-                                        ></i>
-                                    </button>
-                                </td>
+                ) : (
+                    <div />
+                )}
+            </div>
+            {rooms.length ? (
+                <>
+                    <Pagination
+                        metaRecord={metaRecord}
+                        setCurrentPage={setCurrentPage}
+                    />
+                    <table className='mt-3 table table-hover border'>
+                        <thead>
+                            <tr>
+                                <th scope='col'>ID</th>
+                                <th scope='col'>Tên phòng</th>
+                                <th scope='col'>Mô tả</th>
+                                <th scope='col'>Tòa nhà</th>
+                                <th scope='col'>Sức chứa</th>
+                                <th scope='col'>Ngày tạo</th>
+                                <th scope='col'>Ngày cập nhật</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <Pagination
-                    metaRecord={metaRecord}
-                    setCurrentPage={setCurrentPage}
-                />
-            </>
-        );
+                        </thead>
+                        <tbody>
+                            {rooms.map((room, roomIdx) => (
+                                <tr key={roomIdx}>
+                                    {Object.values(room).map(
+                                        (value, valueIdx) => {
+                                            return (
+                                                <td
+                                                    key={valueIdx}
+                                                    scope={
+                                                        !valueIdx ? 'row' : ''
+                                                    }
+                                                >
+                                                    {isIsoDate(value)
+                                                        ? new Date(
+                                                              value
+                                                          ).toLocaleDateString()
+                                                        : value}
+                                                </td>
+                                            );
+                                        }
+                                    )}
+                                    <td className='table-actions d-flex align-items-center'>
+                                        <button
+                                            className='action'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#roomInfo'
+                                            onClick={() =>
+                                                formRef?.current?.updateInfo({
+                                                    ...room,
+                                                    formType: 'edit',
+                                                })
+                                            }
+                                        >
+                                            <i
+                                                className='fa-solid fa-pen'
+                                                data-bs-toggle='tooltip'
+                                                data-bs-placement='top'
+                                                data-bs-custom-class='custom-tooltip'
+                                                data-bs-title='Thay đổi thông tin'
+                                            ></i>
+                                        </button>
+                                        <button
+                                            className='action'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#deleteRoom'
+                                            onClick={() =>
+                                                deleteRoomRef?.current?.updateInfoToDelete(
+                                                    {
+                                                        id: room.id,
+                                                        name: room.name,
+                                                    }
+                                                )
+                                            }
+                                        >
+                                            <i
+                                                className='fa-solid fa-trash'
+                                                data-bs-toggle='tooltip'
+                                                data-bs-placement='top'
+                                                data-bs-custom-class='custom-tooltip'
+                                                data-bs-title='Xóa phòng học'
+                                            ></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <Pagination
+                        metaRecord={metaRecord}
+                        setCurrentPage={setCurrentPage}
+                    />
+                </>
+            ) : (
+                <div className='w-100 text-center text-secondary'>
+                    Không có phòng học
+                </div>
+            )}
+        </>
+    );
 };
 
 export default Rooms;
