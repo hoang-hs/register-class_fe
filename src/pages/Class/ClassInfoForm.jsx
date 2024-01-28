@@ -39,7 +39,7 @@ const ClassInfoForm = forwardRef(function ({token, getClasses}, ref) {
     const addNewClasses = useCallback(() => {
         axios({
             method: 'post',
-            url: `http://34.128.115.142:8080/api/classes`,
+            url: `http://34.101.208.43:8080/api/classes`,
             data: {
                 name,
                 course_id: parseInt(courseId),
@@ -61,7 +61,7 @@ const ClassInfoForm = forwardRef(function ({token, getClasses}, ref) {
         if (!id) return;
         axios({
             method: 'put',
-            url: `http://34.128.115.142:8080/api/classes/${id}`,
+            url: `http://34.101.208.43:8080/api/classes/${id}`,
             data: {
                 name,
                 course_id: parseInt(courseId),

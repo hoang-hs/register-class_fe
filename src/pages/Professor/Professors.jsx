@@ -35,7 +35,7 @@ const Professors = () => {
         // setLoading(true);
         const response = await axios({
             method: 'get',
-            url: `http://34.128.115.142:8080/api/professors?${query}`,
+            url: `http://34.101.208.43:8080/api/professors?${query}`,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',

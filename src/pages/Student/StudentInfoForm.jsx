@@ -33,7 +33,7 @@ const StudentInfoForm = forwardRef(function ({ token, getStudents }, ref) {
     const addNewStudent = useCallback(() => {
         axios({
             method: 'post',
-            url: `http://34.128.115.142:8080/api/students`,
+            url: `http://34.101.208.43:8080/api/students`,
             data: {
                 username,
                 password,
@@ -54,7 +54,7 @@ const StudentInfoForm = forwardRef(function ({ token, getStudents }, ref) {
         if (!id) return;
         axios({
             method: 'put',
-            url: `http://34.128.115.142:8080/api/students/${id}`,
+            url: `http://34.101.208.43:8080/api/students/${id}`,
             data: {
                 username,
                 password,

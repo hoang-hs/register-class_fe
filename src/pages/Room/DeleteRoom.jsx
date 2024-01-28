@@ -15,7 +15,7 @@ const DeleteRoom = forwardRef(function ({ token }, ref) {
     const deleteRoom = () => {
         axios({
             method: 'delete',
-            url: `http://34.128.115.142:8080/api/rooms/${roomId}`,
+            url: `http://34.101.208.43:8080/api/rooms/${roomId}`,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',

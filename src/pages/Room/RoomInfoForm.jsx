@@ -31,7 +31,7 @@ const RoomInfoForm = forwardRef(function ({token, getRooms}, ref) {
     const addNewRoom = useCallback(() => {
         axios({
             method: 'post',
-            url: `http://34.128.115.142:8080/api/rooms`,
+            url: `http://34.101.208.43:8080/api/rooms`,
             data: {
                 number,
                 description,
@@ -50,7 +50,7 @@ const RoomInfoForm = forwardRef(function ({token, getRooms}, ref) {
         if (!id) return;
         axios({
             method: 'put',
-            url: `http://34.128.115.142:8080/api/rooms/${id}`,
+            url: `http://34.101.208.43:8080/api/rooms/${id}`,
             data: {
                 number,
                 description,

@@ -15,7 +15,7 @@ const DeleteCourse = forwardRef(function ({ token }, ref) {
     const deleteCourse = () => {
         axios({
             method: 'delete',
-            url: `http://34.128.115.142:8080/api/courses/${courseId}`,
+            url: `http://34.101.208.43:8080/api/courses/${courseId}`,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',

@@ -35,7 +35,7 @@ const ProfessorInfoForm = forwardRef(function ({token, getProfessors}, ref) {
     const addNewProfessor = useCallback(() => {
         axios({
             method: 'post',
-            url: `http://34.128.115.142:8080/api/professors`,
+            url: `http://34.101.208.43:8080/api/professors`,
             data: {
                 username,
                 password,
@@ -56,7 +56,7 @@ const ProfessorInfoForm = forwardRef(function ({token, getProfessors}, ref) {
         if (!id) return;
         axios({
             method: 'put',
-            url: `http://34.128.115.142:8080/api/professors/${id}`,
+            url: `http://34.101.208.43:8080/api/professors/${id}`,
             data: {
                 username,
                 password,

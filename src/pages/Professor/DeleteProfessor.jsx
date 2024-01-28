@@ -15,7 +15,7 @@ const DeleteProfessor = forwardRef(function ({ token }, ref) {
     const deleteProfessor = () => {
         axios({
             method: 'delete',
-            url: `http://34.128.115.142:8080/api/professors/${professorId}`,
+            url: `http://34.101.208.43:8080/api/professors/${professorId}`,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',

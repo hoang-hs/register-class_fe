@@ -34,7 +34,7 @@ const Classes = ({ title = 'Lớp học', type = null }) => {
     );
 
     const getClasses = async (query = '') => {
-        const baseUrl = 'http://34.128.115.142:8080/api/classes';
+        const baseUrl = 'http://34.101.208.43:8080/api/classes';
         let url;
         switch (role) {
             case 'ADMIN':
@@ -219,7 +219,7 @@ const Classes = ({ title = 'Lớp học', type = null }) => {
                                                                 type === 'open'
                                                                     ? 'post'
                                                                     : 'put',
-                                                            url: 'http://34.128.115.142:8080/api/registrations',
+                                                            url: 'http://34.101.208.43:8080/api/registrations',
                                                             data: {
                                                                 class_id:
                                                                     classV.id,

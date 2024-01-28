@@ -34,7 +34,7 @@ const Rooms = () => {
         // setLoading(true);
         const response = await axios({
             method: 'get',
-            url: `http://34.128.115.142:8080/api/rooms?${query}`,
+            url: `http://34.101.208.43:8080/api/rooms?${query}`,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
